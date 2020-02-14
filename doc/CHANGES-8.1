@@ -1,0 +1,2089 @@
+# $NetBSD: CHANGES-8.1,v 1.1.2.79 2018/12/20 11:35:32 martin Exp $
+
+A complete list of changes from the NetBSD 8.0 release to the NetBSD 8.1
+release:
+
+external/gpl2/groff/tmac/mdoc.local		patched by hand
+sys/sys/param.h					patched by hand
+
+	Welcome to 8.0_STABLE.
+	[snj]
+
+sys/dev/pci/ichsmb.c				1.52, 1.56
+
+	ichsmb(4): Add C620, Apollo Lake, and Gemini Lake devices.
+	[msaitoh, ticket #926]
+
+share/man/man4/lm.4				1.35, 1.36
+sys/dev/ic/nslm7x.c				1.71
+sys/dev/isa/wbsio.c				1.23
+sys/dev/isa/wbsioreg.h				1.8
+
+	lm(4): Support NCT6796D.
+	[msaitoh, ticket #927]
+
+sys/dev/pci/if_wm.c				1.573-1.576, 1.579 and 1.582 via patch
+
+	wm(4):
+	- Count timeout correctly. This change reduce timeout value for 80003
+	  as expected. Reported by mouse@.
+	- Print "device timeout (lost interrupt)"  when all descriptors in a
+	  queue are free.
+	- Rename txq_watchdog to txq_sending to make the meaning clear.
+	- KNF. No functional change.
+	[msaitoh, ticket #928]
+
+sys/arch/x86/x86/cpu_ucode_intel.c		1.14
+sys/kern/kern_cpu.c				1.74
+
+	Add cpu_ucode_intel_verify() to verify microcode image.
+	[msaitoh, ticket #929]
+
+sys/dev/pci/pci_subr.c				1.201
+sys/dev/pci/pcireg.h				1.138
+
+	Fix typo. s/TPL/TLP/
+	[msaitoh, ticket #930]
+
+sys/dev/mii/miidevs				1.127, 1.129
+sys/dev/mii/miidevs.h				regen
+sys/dev/mii/miidevs_data.h			regen
+
+	Add Intel X540 internal PHY.
+	All of 88E151[0248]'s model number is 0x001d.
+	[msaitoh, ticket #931]
+
+sys/dev/mii/mii.h				1.21-1.23
+
+	Miscellaneous additions and cleanup to mii.h
+	[msaitoh, ticket #932]
+
+sys/dev/pci/pci_subr.c				1.202
+sys/dev/pci/pcireg.h				1.139
+sys/dev/pci/ppbreg.h				1.9
+
+	- VGA 16 bit decode bit is not bit 3 but bit 4.
+	- Print Power Management Control/status register in 32bit.
+	- Simplify.
+	[msaitoh, ticket #933]
+
+sys/dev/pci/pcidevs				1.1332-1333, 1335-1339, 1341-1344 via patch
+sys/dev/pci/pcidevs.h				regen
+sys/dev/pci/pcidevs_data.h			regen
+
+	- Add Symbios/LSI RAID and SAS controllers.
+	- Add some broadcom 802.11ac wifi devices.
+	- Add some Marvell Yukon devices.
+	- Add Intel 82Q45 IDER.
+	- Add some Intel 4 series chipset devices.
+	- Add some Intel 82965 devices.
+	- Change Intel 0x2a06 from IDE to IDER.
+	- Add a bunch of nvidia devices from various generations.
+	- Add two more Yukon variants (from OpenBSD).
+	- Add Mobility Radeon HD 4300(0x9552) and Mobility Radeon HD
+	  4500(0x9553) from OpenBSD.
+	- Add nSYS Technologies.
+	- Add Western Digital (Sandisk)  WD Black NVMe SSD as per suggestion
+	  from thorpej@
+	[msaitoh, ticket #934]
+
+sys/dev/pci/ixgbe/ixgbe.c			1.162
+sys/dev/pci/ixgbe/ixgbe_82599.c			1.20
+sys/dev/pci/ixgbe/ixgbe_api.c			1.21
+sys/dev/pci/ixgbe/ixgbe_type.h			1.35
+sys/dev/pci/ixgbe/ixgbe_x540.c			1.16
+
+	- Apply changes of FreeBSD ix-3.2.18.tgz:
+	  - Add IXGBE_DEV_ID_82599_LS(0x154f) support.
+	  - Increase timeout for newer than ixgbe_mac_X550 (i.e. Xeon-D
+	    and Denverton) in ixgbe_acquire_swfw_sync_X540().
+	  - Add some unused macros (IXGBE_FW_LESM_*).
+	- Remove nmbclusters check because we don't use the mbuf cluster.
+	  This change fixes a problem that the number of RX descriptor
+	  unexpectedly decreased from 2048 to 1024 if the number of port
+	  and/or the number of CPU is high.
+	[msaitoh, ticket #935]
+
+sys/arch/x86/x86/coretemp.c			1.36
+
+	- Detect and set Atom's Tj(max) to 90 if it's not the 45nm
+	  D400/D500/N400 series (90 for Diamondville and 100 for Pineview).
+	  From FreeBSD r221509.
+	- Reduce diff a little against FreeBSD.
+	[msaitoh, ticket #936]
+
+sys/dev/mii/mdio.h				1.8-1.9
+
+	- Add 25G(802.3by), 2.5G and 5G (802.3bz).
+  	- Add PMA/PMD control 2 register bit definitions.
+	[msaitoh, ticket #937]
+
+sys/arch/acorn32/podulebus/if_ie.c		1.41
+sys/arch/amiga/dev/if_es.c			1.58
+sys/arch/amiga/dev/if_qn.c			1.45
+sys/arch/arm/at91/at91emac.c			1.20
+sys/arch/arm/ep93xx/epe.c			1.37
+sys/arch/emips/ebus/if_le_ebus.c		1.14
+sys/arch/emips/ebus/if_le_ebus.c		1.15
+sys/arch/mac68k/dev/if_mc.c			1.46
+sys/arch/macppc/dev/am79c950.c			1.39
+sys/arch/newsmips/apbus/if_sn.c			1.40
+sys/arch/next68k/dev/mb8795.c			1.59
+sys/arch/playstation2/dev/if_smap.c		1.25
+sys/arch/playstation2/dev/if_smap.c		1.26
+sys/arch/sun2/dev/if_ec.c			1.28
+sys/arch/sun3/dev/if_ie.c			1.63
+sys/arch/x68k/dev/if_ne_intio.c			1.19
+sys/arch/xen/xen/if_xennet_xenbus.c		1.75
+sys/arch/xen/xen/xennetback_xenbus.c		1.63
+sys/dev/bi/if_ni.c				1.45
+sys/dev/cadence/if_cemac.c			1.12
+sys/dev/ic/am7990.c				1.78
+sys/dev/ic/am79900.c				1.27
+sys/dev/ic/an.c					1.67
+sys/dev/ic/cs89x0.c				1.40
+sys/dev/ic/dm9000.c				1.13
+sys/dev/ic/dm9000.c				1.14
+sys/dev/ic/dp8390.c				1.88
+sys/dev/ic/elink3.c				1.141
+sys/dev/ic/elinkxl.c				1.122
+sys/dev/ic/hme.c				1.98
+sys/dev/ic/i82586.c				1.77
+sys/dev/ic/lance.c				1.53
+sys/dev/ic/mb86950.c				1.27
+sys/dev/ic/mb86960.c				1.86
+sys/dev/ic/mtd803.c				1.34
+sys/dev/ic/pdq_ifsubr.c				1.59
+sys/dev/ic/rrunner.c				1.86
+sys/dev/ic/seeq8005.c				1.58
+sys/dev/ic/sgec.c				1.47
+sys/dev/ic/smc90cx6.c				1.72
+sys/dev/ic/smc91cxx.c				1.96
+sys/dev/ic/tropic.c				1.49
+sys/dev/ic/wi.c					1.245
+sys/dev/isa/if_eg.c				1.93
+sys/dev/isa/if_el.c				1.95
+sys/dev/isa/if_iy.c				1.101
+sys/dev/ofw/ofnet.c				1.58
+sys/dev/pci/if_alc.c				1.27
+sys/dev/pci/if_de.c				1.152
+sys/dev/pci/if_fpa.c				1.61
+sys/dev/pci/if_jme.c				1.34
+sys/dev/pci/if_tl.c				1.108
+sys/dev/pci/if_vte.c				1.19
+sys/dev/pci/ixgbe/ixgbe.h			1.50
+sys/dev/pcmcia/if_cnw.c				1.62
+sys/dev/pcmcia/if_malo_pcmcia.c			1.17
+sys/dev/pcmcia/if_ray.c				1.89
+sys/dev/pcmcia/if_xi.c				1.81
+sys/dev/pcmcia/mhzc.c				1.51
+sys/dev/pcmcia/xirc.c				1.34
+sys/dev/qbus/if_de.c				1.33
+sys/dev/qbus/if_qe.c				1.78
+sys/dev/qbus/if_qt.c				1.22
+sys/dev/sbus/be.c				1.87
+sys/dev/sbus/qe.c				1.68
+sys/dev/scsipi/if_se.c				1.96
+sys/dev/usb/if_atu.c				1.59
+sys/net/if_l2tp.c				1.28 via patch
+sys/net/if_ppp.c				1.160
+
+	No functional change.
+	- It's not required to include net/bpfdesc.h. Remove it.
+	- Simplify bpf_mtap() call.
+	- Remove duplicated inclusion of net/bpf.h.
+	[msaitoh, ticket #938]
+
+usr.bin/netstat/if.c				1.95
+
+	Print iqdrops, too. This change also fixes a bug that Odrops
+	prints iqdrops when kvm read failed.
+	[msaitoh, ticket #939]
+
+libexec/ld.elf_so/headers.c			1.64
+
+	Apply relocbase for tlsinit of the executable itself. Fixes
+	PIE where relocbase typically is not zero.  PR bin/53465
+	[joerg, ticket #940]
+
+usr.sbin/arp/arp.c				1.62
+
+	arp(8): warn when failing to delete a specified arp entry.
+	[ozaki-r, ticket #925]
+
+external/bsd/dhcpcd/dist/configure              up to 1.1.1.8
+external/bsd/dhcpcd/dist/src/defs.h             up to 1.1.1.15
+external/bsd/dhcpcd/dist/src/if-linux.c         up to 1.1.1.10
+external/bsd/dhcpcd/dist/src/ipv6.c             up to 1.1.1.11
+external/bsd/dhcpcd/dist/src/route.c            up to 1.1.1.8
+doc/3RDPARTY					manual edit
+
+	Import dhcpcd-7.0.7 with the following changes:
+	   *  host routes work correctly again
+	   *  vlanid is also used to calculate slaac stable private addresses
+	[roy, ticket #941]
+
+sys/fs/udf/udf_subr.c				1.142
+
+	Enhance logical volume integrity descriptor handling and provide
+	bug-compatibility for Linux mkudffs 1.3 images.
+	[reinoud, ticket #942]
+
+usr.sbin/ypserv/ypinit/ypinit.sh		1.13
+
+	Adjust to newer /bin/sh versions and minor cleanup.
+	[kre, ticket #943]
+
+external/mit/xorg/tools/mkfontscale/Makefile	1.13
+share/mk/bsd.own.mk				1.1066
+
+	Fix groff reproducibility and font directories in X builds.
+	[christos, ticket #944]
+
+sys/arch/i386/i386/trap.c			1.290
+
+	Don't use a const variable as an array size, because it is not a
+	constant expression and will cause the array to needlessly become a
+	variable-size one.
+	[taca, ticket #945]
+
+sbin/cgdconfig/cgdconfig.8			1.37,1.38
+sbin/cgdconfig/cgdconfig.c			1.42-1.45
+
+	Check whether the cgd device selected is available to be
+	configured,that is, not already in use, before requesting
+	passwords.
+	[kre, ticket #946]
+
+sys/dev/pci/if_de.c				1.153
+
+	Remove bpf_tap() call in rx. It's done in if_percpuq_softint().
+	[msaitoh, ticket #947]
+
+sys/arch/sun3/dev/if_ie.c			1.64
+
+	Remove bpf_tap() in iexmit() because ie_start() does bpf_mtap().
+	[msaitoh, ticket #948]
+
+sys/dev/ic/rt2661.c				1.38
+
+	bpf_mtap*() before ieee80211_encap() should be bpf_mtap() rather than
+	bpf_mtap3().
+	[msaitoh, ticket #951]
+
+sys/dev/ic/malo.c				1.11
+
+	bpf_mtap*() after ieee80211_encap() should be bpf_mtap3() rather than
+	bpf_mtap().
+	[msaitoh, ticket #952]
+
+share/man/man4/ddb.4				1.180,1.181
+sys/ddb/db_command.c				1.154
+sys/kern/uipc_socket2.c				1.131
+sys/sys/socketvar.h				1.157
+
+	Add "show socket" command to ddb(4).
+	[msaitoh, ticket #954]
+
+sys/dev/ppbus/if_plip.c				1.29
+
+	KNF & fix typo. No functional change.
+	[msaitoh, ticket #955]
+
+usr.sbin/arp/arp.c				1.63
+
+	arp(8): Fix the host output with -dav argument.
+	[nonaka, ticket #957]
+
+doc/TODO.smpnet					1.20
+sys/dev/pci/if_lmc.c				1.65
+sys/dev/pci/if_lmc.h				1.25
+
+	Move txintr_setup() stuff from lmc_interrupt() and do it in
+	ifnet_start() so we can use bpf_mtap() in the TX path.
+	[msaitoh, ticket #950]
+
+usr.bin/m4/eval.c				1.27
+
+	Avoid an infinite loop.
+	[kre, ticket #956]
+
+sbin/cgdconfig/cgdconfig.8			1.39,1.40
+sbin/cgdconfig/cgdconfig.c			1.46-1.48
+
+	Add '-e' option (echo the passphrase).
+	[alnsn, ticket #958]
+
+external/bsd/cron/dist/entry.c			1.9,1.10
+
+	Avoid negative random values when using '?' in a crontab.
+	[kre, ticket #959]
+
+sys/arch/x86/x86/cpu.c				1.159
+
+	Don't call svs_pdir_switch if SVS is disabled.
+	[maxv, ticket #960]
+
+sys/dev/pci/ixgbe/ix_txrx.c			1.49
+sys/dev/pci/ixgbe/ixgbe.c			1.163
+sys/dev/pci/ixgbe/ixgbe.h			1.51
+sys/dev/pci/ixgbe/ixgbe_netbsd.c		1.8
+sys/dev/pci/ixgbe/ixgbe_osdep.h			1.23
+sys/dev/pci/ixgbe/ixgbe_type.h			1.36
+sys/dev/pci/ixgbe/ixgbe_x550.c			1.13
+
+	ixg(4):
+	Add force_10_100_autonego sysctl. The default value is 0 (false).
+	Make jcl allocation per queue to reduce mutex spin.
+	[msaitoh, ticket #961]
+
+share/man/man4/ifmedia.4			1.30
+
+	Add some missing IFM_* entries.
+	[msaitoh, ticket #962]
+
+sys/dev/usb/if_athn_usb.c			1.28,1.29
+sys/dev/usb/if_atu.c				1.62,1.63
+sys/dev/usb/if_aue.c				1.144,1.145
+sys/dev/usb/if_axe.c				1.91,1.92
+sys/dev/usb/if_axen.c				1.15,1.16
+sys/dev/usb/if_cue.c				1.79,1.80
+sys/dev/usb/if_otus.c				1.34,1.35
+sys/dev/usb/if_rum.c				1.62,1.63
+sys/dev/usb/if_run.c				1.28,1.29
+sys/dev/usb/if_smsc.c				1.35,1.36
+sys/dev/usb/if_udav.c				1.54,1.55
+sys/dev/usb/if_upgt.c				1.21,1.22
+sys/dev/usb/if_ural.c				1.56,1.57
+sys/dev/usb/if_url.c				1.59,1.60
+sys/dev/usb/if_urtw.c				1.16,1.17
+sys/dev/usb/if_urtwn.c				1.61,1.63
+sys/dev/usb/if_zyd.c				1.49,1.50
+sys/dev/usb/uatp.c				1.16,1.17
+sys/dev/usb/umcs.c				1.11,1.12
+sys/dev/usb/usb.c				1.170,1.171
+sys/dev/usb/usb_subr.c				1.225,1.226
+sys/dev/usb/usbdi.h				1.93,1.95
+
+	Make usb detach more reliable by using a new
+	function usb_rem_task_wait.
+	[riastradh, ticket #963]
+
+lib/libcurses/addbytes.c			1.48
+
+	Avoid curx going beyond end of window when adding a wide
+	character to the last column.
+	[simonb, ticket #964]
+
+sys/external/bsd/dwc2/dist/dwc2_core.h		1.9
+sys/external/bsd/dwc2/dist/dwc2_hcd.c		1.21
+sys/external/bsd/dwc2/dist/dwc2_hcd.h		1.15
+sys/external/bsd/dwc2/dist/dwc2_hcdintr.c	1.14
+sys/external/bsd/dwc2/dist/dwc2_hcdqueue.c	1.15
+
+	Fix woeful USB disk performance on ERLITE.
+	[simonb, ticket #966]
+
+crypto/external/bsd/openssl.old/dist/crypto/evp/evp.h 1.6
+crypto/external/bsd/openssl.old/dist/crypto/x509/x509_vfy.h 1.2
+	(applied to crypto/external/bsd/openssl/)
+
+	Add missing functions for racoon2 to compile under netbsd-8.
+	[christos, ticket #967]
+
+sys/fs/tmpfs/tmpfs_vfsops.c			1.73
+
+	Set the MP-safe flag for tmpfs early enough for the root vnode.
+	[christos, ticket #968]
+
+sys/dev/pci/if_wm.c				1.584
+sys/dev/pci/if_wmvar.h				1.39
+
+	- Print MDIC_WA and CLSEMWA workaround flags when boot.
+	- Fix a bug that the link can't detect in link interrupt function for 
+	  non-SERDES fiber.
+	- Fix a bug that 82542 misunderstand fiber's signal detection.	        
+	[msaitoh, ticket #969]
+
+external/mit/lua/dist/README.import             up to 1.2
+external/mit/lua/dist/README                    up to 1.8
+external/mit/lua/dist/doc/contents.html         up to 1.7
+external/mit/lua/dist/doc/lua.css               up to 1.7
+external/mit/lua/dist/doc/manual.html           up to 1.8
+external/mit/lua/dist/doc/readme.html           up to 1.7
+external/mit/lua/dist/src/Makefile              up to 1.5
+external/mit/lua/dist/src/lapi.c                up to 1.11
+external/mit/lua/dist/src/lapi.h                up to 1.9
+external/mit/lua/dist/src/lauxlib.c             up to 1.11
+external/mit/lua/dist/src/lauxlib.h             up to 1.8
+external/mit/lua/dist/src/lbaselib.c            up to 1.10
+external/mit/lua/dist/src/lbitlib.c             up to 1.7
+external/mit/lua/dist/src/lcode.c               up to 1.11
+external/mit/lua/dist/src/lcode.h               up to 1.8
+external/mit/lua/dist/src/lcorolib.c            up to 1.7
+external/mit/lua/dist/src/lctype.c              up to 1.7
+external/mit/lua/dist/src/lctype.h              up to 1.7
+external/mit/lua/dist/src/ldblib.c              up to 1.11
+external/mit/lua/dist/src/ldebug.c              up to 1.11
+external/mit/lua/dist/src/ldebug.h              up to 1.9
+external/mit/lua/dist/src/ldo.c                 up to 1.9
+external/mit/lua/dist/src/ldo.h                 up to 1.9
+external/mit/lua/dist/src/ldump.c               up to 1.9
+external/mit/lua/dist/src/lfunc.c               up to 1.8
+external/mit/lua/dist/src/lfunc.h               up to 1.8
+external/mit/lua/dist/src/lgc.c                 up to 1.10
+external/mit/lua/dist/src/lgc.h                 up to 1.8
+external/mit/lua/dist/src/linit.c               up to 1.9
+external/mit/lua/dist/src/liolib.c              up to 1.9
+external/mit/lua/dist/src/llex.c                up to 1.12
+external/mit/lua/dist/src/llex.h                up to 1.8
+external/mit/lua/dist/src/llimits.h             up to 1.10
+external/mit/lua/dist/src/lmathlib.c            up to 1.9
+external/mit/lua/dist/src/lmem.c                up to 1.9
+external/mit/lua/dist/src/lmem.h                up to 1.8
+external/mit/lua/dist/src/loadlib.c             up to 1.9
+external/mit/lua/dist/src/lobject.c             up to 1.12
+external/mit/lua/dist/src/lobject.h             up to 1.10
+external/mit/lua/dist/src/lopcodes.c            up to 1.8
+external/mit/lua/dist/src/lopcodes.h            up to 1.8
+external/mit/lua/dist/src/loslib.c              up to 1.11
+external/mit/lua/dist/src/lparser.c             up to 1.11
+external/mit/lua/dist/src/lparser.h             up to 1.8
+external/mit/lua/dist/src/lprefix.h             up to 1.7
+external/mit/lua/dist/src/lstate.c              up to 1.9
+external/mit/lua/dist/src/lstate.h              up to 1.9
+external/mit/lua/dist/src/lstring.c             up to 1.9
+external/mit/lua/dist/src/lstring.h             up to 1.9
+external/mit/lua/dist/src/lstrlib.c             up to 1.18
+external/mit/lua/dist/src/ltable.c              up to 1.11
+external/mit/lua/dist/src/ltable.h              up to 1.8
+external/mit/lua/dist/src/ltablib.c             up to 1.9
+external/mit/lua/dist/src/ltm.c                 up to 1.9
+external/mit/lua/dist/src/ltm.h                 up to 1.8
+external/mit/lua/dist/src/lua.c                 up to 1.9
+external/mit/lua/dist/src/lua.h                 up to 1.11
+external/mit/lua/dist/src/luac.c                up to 1.10
+external/mit/lua/dist/src/luaconf.h             up to 1.23
+external/mit/lua/dist/src/lualib.h              up to 1.7
+external/mit/lua/dist/src/lundump.c             up to 1.8
+external/mit/lua/dist/src/lundump.h             up to 1.7
+external/mit/lua/dist/src/lutf8lib.c            up to 1.8
+external/mit/lua/dist/src/lvm.c                 up to 1.14
+external/mit/lua/dist/src/lvm.h                 up to 1.10
+external/mit/lua/dist/src/lzio.c                up to 1.8
+external/mit/lua/dist/src/lzio.h                up to 1.8
+doc/3RDPARTY					1.1536
+
+	Import lua 5.3.5.
+	[alnsn, ticket #970]
+
+sys/external/bsd/dwc2/dist/dwc2_hcdintr.c	1.15
+
+	Fix the change from ticket #966 to not break ping protocol.
+	[skrll, ticket #971]
+
+external/bsd/bind/dist/lib/isc/unix/socket.c	1.23
+
+	Make ENOBUFS a soft error.
+	[christos, ticket #972]
+
+sys/arch/xen/xen/xennetback_xenbus.c		1.68 (patch)
+
+	Disestablish interrupt handler regardless of the state.
+	[dolecek, ticket #973]
+
+sys/net/if_tun.c				1.145,1.146
+
+	tun(4): fix locking against myself and kevent locking.
+	[ozaki-r, ticket #974]
+
+sys/netinet6/nd6_rtr.c				1.144
+
+	Don't call find_pfxlist_reachable_router, which may sleep, in a
+	pserialize read section
+	[ozaki-r, ticket #975]
+
+sbin/route/route.c				1.160
+
+	Resolve every route(4) message type before printing anything more
+	about it other than the type and length.
+	[roy, ticket #976]
+
+sys/compat/netbsd32/netbsd32.h			1.119
+sys/compat/netbsd32/netbsd32_fs.c		1.81
+
+	Support nullfs in netbsd32.
+	[mrg, ticket #977]
+
+dist/pf/share/man/man4/pf.4			1.13
+dist/pf/share/man/man4/pflog.4			1.7
+dist/pf/share/man/man4/pfsync.4			1.7
+dist/pf/share/man/man5/pf.conf.5		1.17
+dist/pf/share/man/man5/pf.os.5			1.7
+
+	Add a deprecation note in each of the PF man pages,
+	and note it is obsolete.
+	[maxv, ticket #978]
+
+sys/dev/usb/ehci.c				1.260,1.261 (patch)
+sys/dev/usb/ehcivar.h				1.45 (patch)
+sys/dev/usb/motg.c				1.22 (patch)
+sys/dev/usb/ohci.c				1.282,1.283 (patch)
+sys/dev/usb/ohcivar.h				1.60 (patch)
+sys/dev/usb/uhci.c				1.281,1.282 (patch)
+sys/dev/usb/uhcivar.h				1.55 (patch)
+sys/dev/usb/usbdi.c				1.177 (patch)
+sys/dev/usb/usbdivar.h				1.117 (patch)
+sys/dev/usb/xhci.c				1.96 (patch)
+sys/dev/usb/xhcivar.h				1.10 (patch)
+sys/external/bsd/dwc2/dwc2.c			1.52 (patch)
+
+	Move the struct usb_task to struct usbd_xfer for everyone to use
+	and various transfer/abort handling fixes.
+	Initialise the usb abort task in the HCI allocx routine, so that it
+	can be safely usb_rem_task()'d.
+	Rework the handling of softintr vs cancellation vs timeout abort.
+	[mrg, ticket #980]
+
+external/bsd/dhcpcd/dist/src/defs.h             up to 1.1.1.16
+external/bsd/dhcpcd/dist/src/dhcp.c             up to 1.13
+external/bsd/dhcpcd/dist/src/dhcp6.c            up to 1.1.1.13
+external/bsd/dhcpcd/dist/src/if-bsd.c           up to 1.1.1.9
+external/bsd/dhcpcd/dist/src/if.c               up to 1.1.1.9
+external/bsd/dhcpcd/dist/src/ipv4.c             up to 1.1.1.10
+external/bsd/dhcpcd/dist/src/ipv6.c             up to 1.1.1.12
+doc/3RDPARTY					(manually edited)
+
+	Import dhcpcd-7.0.8.
+	[roy, ticket #981]
+
+bin/sh/eval.c					1.157
+
+	Fix "command not found" handling so that the error message
+	goes to stderr (after any redirections are applied).
+	[kre, ticket #982]
+
+bin/sh/eval.c					1.158
+bin/sh/eval.h					1.21
+bin/sh/main.c					1.74
+
+	Back out eval.c rev 1.125 which tried to fix a redirection
+	bug but was incorrect and caused other fallout.
+	[kre, ticket #983]
+
+sys/arch/xen/xen/xbd_xenbus.c			1.83
+
+	Avoid a race condition between I/O submission in xbd_diskstart() and
+	interrupt handling in xbd_handler().
+	[jdolecek, ticket #984]
+
+crypto/external/bsd/openssl/lib/libcrypto/arch/i386/modes.inc 1.2,1.3
+
+	Sync compiler flags between genereation of ghash-x86.S and
+	compilation of gcm128.c.
+	[manu, ticket #985]
+
+sys/netipsec/key.c				1.257
+
+	Don't call key_ismyaddr, which may sleep, in a pserialize read
+	section.
+	[ozaki-r, ticket #986]
+
+bin/sh/trap.c					1.44
+
+	Fix a potential race in handling of the trap[] strings.
+	[kre, ticket #987]
+
+bin/sh/histedit.c				1.53
+bin/sh/mystring.c				1.18
+bin/sh/options.c				1.53
+bin/sh/parser.c					1.147
+bin/sh/var.c					1.70
+
+	Remove atoi().
+	Always init OPTIND to 1 when sh starts.
+	[kre, ticket #988]
+
+bin/sh/eval.c					1.156
+bin/sh/eval.h					1.20
+bin/sh/exec.c					1.53
+
+	Fix several bugs in the command / type builtin.
+	[kre, ticket #989]
+
+sys/dev/usb/usb_subr.c				1.224
+
+	Add missing KERNEL_LOCK protection around autoconf calls.
+	[mlelstv, ticket #990]
+
+sys/net/if.c					1.434
+
+	Restore splx() removed accidentally in rev 1.406
+	[ozaki-r, ticket #991]
+
+bin/df/df.1					1.48,1.49
+bin/df/df.c					1.93
+bin/ksh/ksh.Man					1.26
+bin/ln/ln.c					1.40
+external/bsd/top/dist/top.1.in			1.11
+sbin/amrctl/amrctl.c				1.11
+sbin/fsck_ext2fs/fsck_ext2fs.8			1.21
+sbin/fsck_ext2fs/main.c				1.38
+sbin/gpt/main.c					1.12
+
+	Various minor man / usage fixes.
+	[sevan, ticket #992]
+
+sbin/fdisk/fdisk.c				1.155
+
+	Add missing -z flag to usage().
+	[sevan, ticket #993]
+
+xsrc/external/mit/libX11/dist/src/FontNames.c	(patch)
+xsrc/external/mit/libX11/dist/src/GetFPath.c	(patch)
+xsrc/external/mit/libX11/dist/src/LiHosts.c	(patch)
+xsrc/external/mit/libX11/dist/src/ListExt.c	(patch)
+
+	Apply fixes from libX11 1.6.5 for the following vulnerabilities:
+	Fixed off-by-one writes (CVE-2018-14599)
+	Validation of server response in XListHosts
+	Fixed out of boundary write (CVE-2018-14600)
+	Fixed crash on invalid reply (CVE-2018-14598)
+	[mrg, ticket #995]
+
+sys/arch/prep/prep/machdep.c			1.76
+sys/arch/prep/prep/mainbus.c			1.34
+
+	Fix initialization order so we can boot again on IBM PPS
+	Model 6015.
+	[martin, ticket #994]
+
+sys/external/bsd/drm2/dist/drm/nouveau/nouveau_fence.c 1.5-1.9
+sys/external/bsd/drm2/dist/drm/nouveau/nouveau_fence.h 1.3-1.5
+sys/external/bsd/drm2/dist/drm/nouveau/nouveau_nv84_fence.c 1.3
+
+	Rewrite nouveau_fence in an attempt to make it make sense.
+	Fences may last longer than their channels.
+	Fix return values.
+	[riastradh, ticket #996]
+
+sys/external/bsd/common/include/linux/kernel.h	1.9
+sys/external/bsd/drm2/i915drm/intel_gtt.c	1.6
+sys/external/bsd/drm2/include/linux/bitops.h	1.12
+sys/external/bsd/drm2/include/linux/bitops.h	1.13
+sys/external/bsd/drm2/include/linux/delay.h	1.5
+sys/external/bsd/drm2/include/linux/vmalloc.h	1.5
+
+	Change hweight32 to take a uint32_t arg.
+	Fix find_first_zero_bit to find the high bits of 64-bit words.
+	Use uvm_km_alloc(kernel_map) and pmap_kenter, not uvm_pagermapin.
+	Flush chipset writes after GGTT update.
+	Round nsec up for usec delay.
+	libkern min/max is 32-bit.  Linux min/max is generic.
+	[riastradh, ticket #997]
+
+sys/dev/pci/agp_i810.c				1.123
+sys/dev/pci/agp_i810var.h			1.7
+sys/external/bsd/drm2/i915drm/intel_gtt.c	1.7
+
+	Restore gtt page table control register on resume.
+	[riastradh, ticket #998]
+
+sys/dev/fss.c					1.105,1.106
+sys/dev/fssvar.h				1.30,1.31
+
+	Change fss ioctl to no longer block while a snapshot gets
+	created or destroyed.
+	[hannken, ticket #999]
+
+sys/kern/vfs_bio.c				1.277
+
+	Fix deadlock with getnewbuf().
+	[hannken, ticket #1000]
+
+usr.sbin/npf/npfctl/npf.conf.5			1.49,1.50(partly),
+						1.51-1.70 (patch)
+
+	Various improvements to the npf.conf(5) man page.
+	[maxv, ticket #1001]
+
+usr.bin/printf/printf.1				1.31 (patch)
+usr.bin/printf/printf.c				1.43
+
+	Allow signed numbers as inputs for all integer formats, including
+	those which treat the data as unsigned.
+	[kre, ticket #1002]
+
+sys/external/bsd/drm2/dist/drm/i915/i915_reg.h	1.2
+sys/external/bsd/drm2/dist/drm/i915/intel_sdvo.c 1.8
+sys/external/bsd/drm2/dist/drm/ttm/ttm_tt.c	1.10
+sys/external/bsd/drm2/drm/drm_scatter.c		1.4
+sys/external/bsd/drm2/linux/linux_idr.c		1.6
+sys/external/bsd/drm2/linux/linux_ww_mutex.c	1.3,1.4
+
+	Miscelaneous minor improvements to DRM/KMS.
+	The state in netbsd-8 now matches HEAD before the
+	Linux 4.4 drm import, with the exception of Tegra (arm)
+	specific code.
+	[riastradh, ticket #1003]
+
+share/man/man4/acphy.4				1.4
+share/man/man4/acpicpu.4			1.35
+share/man/man4/adb.4				1.4
+share/man/man4/atppc.4				1.16
+share/man/man4/axe.4				1.14
+share/man/man4/az.4				1.7
+share/man/man4/bktr.4				1.19
+share/man/man4/cgd.4				1.22
+
+	axe(4): Add the correct PHY to SYNOPSIS.
+	Various markup fixes.
+	[sevan, ticket #1004]
+
+etc/MAKEDEV.tmpl				1.192
+
+	Create fw(4) & fwmem(4) device nodes by default,
+	so fwctl(8) works out of the box.
+	[sevan, ticket #1005]
+
+sys/dev/pci/ixgbe/ixgbe.c			1.164
+
+	Fix a bug that media change may fail.
+	[msaitoh, ticket #1006]
+
+lib/libc/net/if_nametoindex.c			1.6
+
+	Make if_freenameindex(3) use SIOCGIFINDEX to improve performance.
+	[msaitoh, ticket #1007]
+
+external/gpl3/gcc/dist/config/tls.m4		1.2
+external/gpl3/gcc/dist/libgcc/configure		1.5
+tools/gcc/gcc-version.mk			1.11 (patch)
+tools/gcc/mknative-gcc				1.93,1.94
+
+	Correct extra parens, regen configure (selectively).
+	Also pullout INTERNAL_CFLAGS for the libgcc build, where it may have
+	-DHAVE_CC_TLS defined on the command line.  (we already collect all
+	the other components.)
+	Fixes root cause of PR toolchain/53567.
+	Normalize source tree path so mknative runs are reproducable.
+	Remove GCC 5 marker.  This is now nb3 20180905.
+	[mrg, ticket #1008]
+
+external/gpl3/gcc/lib/libgcc/Makefile.inc			1.37
+external/gpl3/gcc/lib/libgcc/arch/alpha/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/alpha/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/arm/auto-target.h 		(patch)
+external/gpl3/gcc/lib/libgcc/arch/arm/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/armeb/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/armeb/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/earm/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earm/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmeb/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmeb/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmhf/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmhf/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmhfeb/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmhfeb/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv4/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv4/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv4eb/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv4eb/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv6/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv6/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv6eb/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv6eb/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv6hf/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv6hf/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv6hfeb/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv6hfeb/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv7/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv7/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv7eb/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv7eb/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv7hf/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv7hf/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv7hfeb/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/earmv7hfeb/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/hppa/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/hppa/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/i386/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/i386/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/ia64/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/ia64/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/m68000/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/m68000/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/m68k/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/m68k/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/mips64eb/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/mips64eb/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/mips64el/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/mips64el/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/mipseb/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/mipseb/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/mipsel/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/mipsel/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/powerpc/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/powerpc/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/powerpc64/auto-target.h	(patch)
+external/gpl3/gcc/lib/libgcc/arch/powerpc64/defs.mk 		(patch)
+external/gpl3/gcc/lib/libgcc/arch/sh3eb/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/sh3eb/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/sh3el/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/sh3el/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/sparc/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/sparc/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/sparc64/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/sparc64/defs.mk		(patch)
+external/gpl3/gcc/lib/libgcc/arch/vax/auto-target.h 		(patch)
+external/gpl3/gcc/lib/libgcc/arch/vax/defs.mk			(patch)
+external/gpl3/gcc/lib/libgcc/arch/x86_64/auto-target.h		(patch)
+external/gpl3/gcc/lib/libgcc/arch/x86_64/defs.mk		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/alpha/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/alpha/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/arm/c++config.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/arm/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/armeb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/armeb/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earm/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earm/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmeb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmeb/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmhf/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmhf/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmhfeb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmhfeb/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv4/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv4/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv4eb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv4eb/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv6/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv6/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv6eb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv6eb/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv6hf/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv6hf/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv6hfeb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv6hfeb/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv7/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv7/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv7eb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv7eb/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv7hf/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv7hf/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv7hfeb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/earmv7hfeb/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/hppa/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/hppa/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/i386/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/ia64/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/ia64/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/m68000/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/m68000/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/m68k/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/mips64eb/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/mips64el/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/mipseb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/mipseb/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/mipsel/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/mipsel/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/powerpc/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/powerpc64/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/powerpc64/gstdint.h 	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/sh3eb/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/sh3eb/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/sh3el/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/sh3el/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/sparc/c++config.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/sparc/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/sparc64/gstdint.h	(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/vax/gstdint.h		(patch)
+external/gpl3/gcc/lib/libstdc++-v3/arch/x86_64/gstdint.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/alpha/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/arm/configargs.h 		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/armeb/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earm/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmeb/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmhf/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmhfeb/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv4/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv4eb/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv6/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv6eb/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv6hf/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv6hfeb/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv7/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv7eb/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv7hf/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/earmv7hfeb/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/hppa/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/i386/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/ia64/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/m68000/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/m68k/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/mips64eb/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/mips64el/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/mipseb/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/mipsel/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/powerpc/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/powerpc64/configargs.h	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/powerpc64/defs.mk		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/powerpc64/gtyp-input.list	(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/powerpc64/tm.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/sh3eb/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/sh3el/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/sparc/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/sparc64/configargs.h		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/vax/configargs.h 		(patch)
+external/gpl3/gcc/usr.bin/gcc/arch/x86_64/configargs.h		(patch)
+
+	Pull -DHAVE_CC_TLS out of $(INTERNAL_CFLAGS) if it is there, and add
+	it to CPPFLAGS. This fixes PR#53567.
+	Regen (mknative).
+	[mrg, ticket #1009]
+
+sys/dev/scsipi/scsipi_base.c			1.178
+
+	Async event can be called before the adapter is running (pmax tc asc).
+	[mrg, ticket #1010]
+
+sys/arch/amd64/conf/GENERIC			1.502 (patch)
+sys/arch/i386/conf/GENERIC			1.1188 (patch)
+sys/dev/usb/usbdevices.config			1.32 (patch)
+
+	Add commented entries that exist in amd64 GENERIC: oboe, mos, umb.
+	Comment out uscanner(4) -- usb scanners use ugen(4) interface.
+	Use dev/usb/usbdevices.config, gaining these missing drivers:
+	slurm(4), uthum(4), umcs(4), uark(4), upgt(4), and usmsc(4).
+	[mrg, ticket #1011]
+
+sys/net/route.c					1.212,1.213
+
+	Fix reference leak in the delyed route free mechanism.
+	Avoid a race overwriting rt_free_global.enqueued.
+	[ozaki-r, ticket #1012]
+
+sys/ddb/db_command.c				1.155 (patch)
+sys/kern/subr_lockdebug.c			1.65 (patch)
+sys/sys/lockdebug.h				1.20 (patch)
+
+	Add a lockdebug_dismiss() function for DDB to use that tells
+	lockdebug to avoid asserts.  use it for the ddb "reboot"
+	command, so that it doesn't matter how ddb was entered, the
+	reboot not trigger mutex checks and not work.
+	[mrg, ticket #1013]
+
+sys/dev/pci/ixgbe/ix_txrx.c			1.50
+
+	Fix a wrong error return value from ixgbe_mq_start (an if_transmit
+	function).
+	[msaitoh, ticket #1014]
+
+bin/sh/expand.c					1.124,1.127 (patch)
+bin/sh/parser.c					1.148,1.149 (patch)
+bin/sh/syntax.c					1.6 (patch)
+bin/sh/syntax.h					1.9 (partial, patch)
+
+	Fix pattern matching.
+	[kre, ticket #1015]
+
+usr.bin/find/function.c				1.77
+
+	Avoid getting "arguemt list too long" in find -exec invocations.
+	[kre, ticket #1016]
+
+distrib/sgimips/instkernel/Makefile		1.13
+sys/arch/sgimips/conf/INSTALL32_IP2x		1.10
+sys/arch/sgimips/hpc/wdsc.c			1.35
+sys/arch/sgimips/sgimips/machdep.c		1.146
+sys/arch/sgimips/stand/boot/Makefile		1.20
+
+	Disable misc options to shrink an INSTALL kernel for IP2x.
+	Fix build failure without options DDB and with pseudo-device ksyms.
+	Use elf2ecoff(1) rather than objcopy(1) to generat ecoff for old
+	machines.
+	Fix wdsc(4) probe failure on HPC1.5 machines
+	(Indigo R3k/R4k, IP6/IP10/IP12).
+	[tsutsui, ticket #1017]
+
+sys/netinet/in_l2tp.c				1.16
+sys/netinet6/in6_l2tp.c				1.17
+
+	fix: l2tp(4) cannot receive packets after reset session without
+	reset tunnel.
+	[knakahara, ticket #1018]
+
+sbin/raidctl/raidctl.8				1.73
+sbin/raidctl/rf_configure.c			1.27-1.32
+sbin/raidctl/rf_configure.h			1.2
+
+	Various raidctl fixes.
+	Support NAME=<wedge name> syntax for disks and spares.
+	[nakayama, ticket #1019]
+
+usr.bin/printf/printf.c				1.46
+
+	Fix sh builtin printf %b \c state handling.
+	[kre, ticket #1020]
+
+sys/dev/hpc/hpckbd.c				1.33-1.35
+
+	Fix hpcmips kernel crash when attaching console.
+	Fix comment formatting and clarify.
+	[rin, ticket #1021]
+
+sys/dev/pci/hdaudio_pci.c			1.9,1.10
+
+	Use 64 bit dma if available.
+	[mrg, ticket #1022]
+
+sys/dev/scsipi/scsipi_verbose.c			1.34
+
+	Don't print a blank line that ends up in logs and console output.
+	[mrg, ticket #1023]
+
+sys/ddb/db_command.c				1.157,1.158
+sys/kern/subr_lockdebug.c			1.67
+
+	Fix rebooting from ddb, avoid lockdebug checks and allow
+	interrupts to work.
+	[mrg, ticket #1024]
+
+sys/kern/kern_drvctl.c				1.44
+sys/kern/subr_autoconf.c			1.263
+sys/sys/device.h				1.156
+sys/sys/systm.h					1.278
+
+	- move export for devmon_insert_vec into sys/device.h.
+	- export root_is_mounted for future USB RB_ASKNAME hack.
+	- make some things in subr_autoconf.c static
+	- move device_printf() prototype out from the middle of two sets of
+	  aprint_*() prototypes.
+	[mrg, ticket #1025]
+
+sys/arch/x86/include/specialreg.h		1.130
+sys/arch/x86/x86/procfs_machdep.c		1.24
+
+	- Add cpuid 7 edx L1D_FLUSH bit.
+	- Add IA32_ARCH_SKIP_L1DFL_VMENTRY bit.
+	- Add IA32_FLUSH_CMD MSR.
+	[msaitoh, ticket #1026]
+
+sys/dev/pci/if_wm.c				1.586-1.588
+
+	- Split txdrop evcnt into pcqdrop and descdrop.
+	- Simplify evcnt name by removing duplicated "tx" or "rx".
+	- Reduce the number of DMA segments if they do not fix.
+	- Reduce the max number of DMA segments
+	[msaitoh, ticket #1027]
+
+sys/dev/pci/pci_subr.c				1.203
+sys/dev/pci/pcireg.h				1.140
+
+	Add ATS Relaxed Ordering supported bit described in Address Translation
+	Relaxed Ordering ECN.
+	[msaitoh, ticket #1028]
+
+sys/dev/pci/ixgbe/ixgbe.c			1.166
+
+	- The location of some registers in Denverton were changed.
+	- Fix sysctl knobs for WOL for some devices.
+	[msaitoh, ticket #1029]
+
+sys/kern/kern_synch.c				1.317
+
+	Avoid a long hang (maybe forever) in pserialize.
+	[bouyer, ticket #1031]
+
+usr.sbin/sysinst/arch/sgimips/md.c		1.5,1.6
+
+	Fix bootloader installation on sgimips (PR 53583).
+	[tsutsui, ticket #1032]
+
+sys/arch/pmax/pmax/dec_3min.c			1.74
+
+	Fix hangup after framebuffers are attached on 3MIN (PR 53611).
+	[tsutsui, ticket #1033]
+
+sys/arch/xen/xen/xbdback_xenbus.c		(apply patch)
+
+	Avoid sleeping with a spin lock held.
+	[manu, ticket #1034]
+
+sys/dev/pci/files.pci				1.403
+
+	ixg and ixv depend on mii and mii_phy.
+	[nakayama, ticket #1035]
+
+usr.sbin/npf/npfctl/npf.conf.5			1.71-1.79 (patch)
+
+	Sync with NetBSD-current.
+	[maxv, ticket #1030]
+
+sys/external/bsd/drm2/linux/linux_ww_mutex.c	(apply patch)
+
+	Fix LOCKDEBUG build.
+	[mrg, ticket #1036]
+
+share/man/man4/usb.4				1.110 (patch)
+sys/ddb/db_command.c				1.159,1.160 (patch)
+sys/ddb/db_output.c				1.34 (patch)
+sys/dev/pci/xhci_pci.c				1.14 (patch)
+sys/dev/usb/ehci.c				1.264,1.265 (patch)
+sys/dev/usb/ehcivar.h				1.46 (patch)
+sys/dev/usb/ohci.c				1.287 (patch)
+sys/dev/usb/uhci.c				1.284 (patch)
+sys/dev/usb/uhcivar.h				1.56 (patch)
+sys/dev/usb/uhub.c				1.139 (patch)
+sys/dev/usb/usb.c				1.172-1.174 (patch)
+sys/dev/usb/usb_subr.c				1.227 (patch)
+sys/dev/usb/usbdi.c				1.178 (patch)
+sys/dev/usb/xhci.c				1.99 (patch)
+sys/external/bsd/dwc2/dwc2.c			1.55 (patch)
+sys/kern/subr_userconf.c			1.27 (patch)
+
+	Fix usb keyboard "boot -a" issues and sync with -current.
+	[mrg, ticket #1037]
+
+lib/libcurses/get_wch.c				1.15,1.16
+lib/libcurses/getch.c				1.66,1.67
+lib/libcurses/tstp.c				1.43
+
+	PR lib/53615: getch() and get_wch() should return KEY_RESIZE
+	when interrupted by SIGWINCH.
+	Before invoking a previous signal handler, make sure it is not SIG_*.
+	Correct detecting of terminal resize in curses(3) with keypad(,TRUE).
+	Handle catching terminal resize in INKEY_NORM and INKEY_ASSEMBLING.
+	[kamil, ticket #1039]
+
+lib/libcurses/move.c				1.19
+
+	According to POSIX moving the cursor in curses(3) touches the window.
+	[kamil, ticket #1040]
+
+sys/netinet/ip_reass.c				1.17 (patch)
+sys/netinet6/frag6.c				1.74 (patch)
+sys/netinet6/ip6_var.h				(apply patch)
+
+	When reassembling IPv4/IPv6 packets, ensure each fragment has been
+	subject to the same IPsec processing. That is to say, that all
+	fragments are ESP, or AH, or AH+ESP, or none.
+	[maxv, ticket #1041]
+
+lib/libcurses/curses_private.h			1.63
+lib/libcurses/get_wch.c				1.17,1.18
+lib/libcurses/getch.c				1.68,1.69
+
+	Unify resize handling in getch.
+	Call resizeterm if getch issues KEY_RESIZE.
+	[roy, ticket #1042]
+
+lib/libcurses/get_wch.c				1.19
+lib/libcurses/getch.c				1.70
+lib/libcurses/resize.c				1.27
+
+	curses: resizeterm(3) should always send KEY_RESIZE.
+	[roy, ticket #1043]
+
+sys/dev/pad/pad.c				1.58
+
+	pad(4) mixer has only 1 channel, so return EINVAL in the case
+	other than 1 is requested.
+	[nakayama, ticket #1044]
+
+sys/net/if_bridge.c				1.157-1.159
+
+	Fix a bug that checksum of spontaneous packets through a bridge
+	became wrong if the output interface's HW offload were enabled.
+	Fixes part of PR#53562. This change doesn't fix a case that a
+	packet is sent not from the outgoing interface which was selected
+	in ip[46]_output() but from other bridge member.
+
+	Micro optimization. m_copym(m, 0, M_COPYALL) -> m_copypacket(m).
+	[msaitoh, ticket #1046]
+
+lib/libcurses/curses_private.h			1.64,1.65
+lib/libcurses/curses_screen.3			1.24,1.25
+lib/libcurses/fileio.c				1.6
+lib/libcurses/initscr.c				1.33
+lib/libcurses/newwin.c				1.52
+lib/libcurses/resize.c				1.28,1.29
+lib/libcurses/ripoffline.c			1.4,1.5
+lib/libcurses/screen.c				1.34
+lib/libcurses/setterm.c				1.67
+
+	curses: fix ripoffline.
+	When creating stdscr, ensure it's placed and sized in accordance with
+	lines ripped off.
+	curses: resize ripped off windows.
+	Fix typos in curses_screen.3
+	[roy, ticket #1047]
+
+lib/libcurses/curses_private.h			1.66
+lib/libcurses/slk.c				1.3,1.4
+
+	curses: declare SLK format as invalid until slk_init(3) called.
+	curses: once __slk_init is called, reset slk_fmt.
+	[roy, ticket #1048]
+
+bin/sh/jobs.c					1.101
+
+	A change in rev 1.91 interacted badly with the way that showjobs()
+	worked, preventing $(jobs) (and more usefully $(jobs -p) from
+	working.   Fix that.
+	[kre, ticket #1050]
+
+sbin/fsck_ffs/setup.c				1.102
+
+	Add a test for duplicate inodes on the persistent snapshot list.
+	[hannken, ticket #1051]
+
+distrib/sets/lists/comp/mi			1.2233
+share/man/man9/Makefile				1.431
+share/man/man9/fstrans.9			1.27
+sys/dev/vnd.c					1.266
+sys/kern/vfs_trans.c				1.51
+sys/miscfs/genfs/genfs_vfsops.c			1.8
+sys/rump/librump/rumpkern/emul.c		1.187
+sys/sys/fstrans.h				1.12
+
+	Fix for PR kern/53624 (dom0 freeze on domU exit):
+	Bring back three state file system suspension:
+	 NORMAL -> SUSPENDING -> SUSPENDED
+	and add operation fstrans_start_lazy() that only blocks while
+	SUSPENDED.
+	[hannken, ticket #1052]
+
+sys/dev/hdaudio/hdafg.c				1.16
+
+	Fix hdaudio device configuration for COP_AWCAP_TYPE_PIN_COMPLEX,
+	to make e.g. the built-in speaker work on Dell OptiPlex 5060.
+	[manu, ticket #1053]
+
+sys/dev/dm/device-mapper.c			1.40
+
+	Add ioctls to query geometry.
+	[mlelstv, ticket #1055]
+
+sys/kern/kern_subr.c				1.220
+
+	Set rootdev for wedges.
+	[mlelstv, ticket #1056]
+
+sys/arch/xen/include/xen.h			1.40
+sys/arch/xen/x86/autoconf.c			1.20
+
+	Support bootspec.
+	[mlelstv, ticket #1057]
+
+sys/dev/vnd.c					1.268
+
+	Calculate a missing cylinder count in the geometry spec from
+	image size.
+	[mlelstv, ticket #1058]
+
+sys/dev/vnd.c					1.265
+sys/dev/vndvar.h				1.37
+
+	getdisksize only operates on device vnodes. Use the ioctl on
+	the underlying device instead.
+	[mlelstv, ticket #1059]
+
+external/bsd/nsd/dist/contrib/nsd.service       up to 1.1.1.1
+external/bsd/nsd/dist/contrib/nsd.socket        up to 1.1.1.1
+external/bsd/nsd/dist/xfr-inspect.c             up to 1.1.1.2
+external/bsd/nsd/dist/systemd.m4                up to 1.1.1.1
+external/bsd/nsd/Makefile.inc                   up to 1.5
+external/bsd/nsd/dist/Makefile.in               up to 1.1.1.3
+external/bsd/nsd/dist/axfr.c                    up to 1.1.1.2
+external/bsd/nsd/dist/config.h.in               up to 1.1.1.3
+external/bsd/nsd/dist/configlexer.c             up to 1.3
+external/bsd/nsd/dist/configlexer.lex           up to 1.1.1.3
+external/bsd/nsd/dist/configparser.c            up to 1.3
+external/bsd/nsd/dist/configparser.h            up to 1.3
+external/bsd/nsd/dist/configparser.y            up to 1.1.1.3
+external/bsd/nsd/dist/configure                 up to 1.1.1.3
+external/bsd/nsd/dist/configure.ac              up to 1.1.1.3
+external/bsd/nsd/dist/dbaccess.c                up to 1.1.1.2
+external/bsd/nsd/dist/dbcreate.c                up to 1.1.1.3
+external/bsd/nsd/dist/difffile.c                up to 1.1.1.3
+external/bsd/nsd/dist/difffile.h                up to 1.1.1.2
+external/bsd/nsd/dist/dns.c                     up to 1.1.1.3
+external/bsd/nsd/dist/dns.h                     up to 1.1.1.3
+external/bsd/nsd/dist/ipc.c                     up to 1.1.1.3
+external/bsd/nsd/dist/lookup3.c                 up to 1.1.1.2
+external/bsd/nsd/dist/mini_event.c              up to 1.1.1.2
+external/bsd/nsd/dist/mini_event.h              up to 1.1.1.2
+external/bsd/nsd/dist/namedb.c                  up to 1.1.1.3
+external/bsd/nsd/dist/namedb.h                  up to 1.1.1.2
+external/bsd/nsd/dist/netio.c                   up to 1.1.1.2
+external/bsd/nsd/dist/nsd-checkconf.8.in        up to 1.1.1.3
+external/bsd/nsd/dist/nsd-checkconf.c           up to 1.1.1.3
+external/bsd/nsd/dist/nsd-checkzone.8.in        up to 1.1.1.3
+external/bsd/nsd/dist/nsd-checkzone.c           up to 1.1.1.2
+external/bsd/nsd/dist/nsd-control.8.in          up to 1.1.1.3
+external/bsd/nsd/dist/nsd-control.c             up to 1.1.1.3
+external/bsd/nsd/dist/nsd-mem.c                 up to 1.1.1.3
+external/bsd/nsd/dist/nsd.8.in                  up to 1.1.1.3
+external/bsd/nsd/dist/nsd.c                     up to 1.1.1.3
+external/bsd/nsd/dist/nsd.conf.5.in             up to 1.1.1.3
+external/bsd/nsd/dist/nsd.conf.sample.in        up to 1.1.1.3
+external/bsd/nsd/dist/nsd.h                     up to 1.1.1.3
+external/bsd/nsd/dist/nsec3.c                   up to 1.1.1.3
+external/bsd/nsd/dist/nsec3.h                   up to 1.1.1.2
+external/bsd/nsd/dist/options.c                 up to 1.1.1.3
+external/bsd/nsd/dist/options.h                 up to 1.1.1.3
+external/bsd/nsd/dist/packet.c                  up to 1.1.1.2
+external/bsd/nsd/dist/packet.h                  up to 1.1.1.2
+external/bsd/nsd/dist/query.c                   up to 1.1.1.3
+external/bsd/nsd/dist/query.h                   up to 1.1.1.2
+external/bsd/nsd/dist/radtree.c                 up to 1.1.1.2
+external/bsd/nsd/dist/radtree.h                 up to 1.1.1.2
+external/bsd/nsd/dist/rbtree.c                  up to 1.1.1.2
+external/bsd/nsd/dist/rbtree.h                  up to 1.1.1.2
+external/bsd/nsd/dist/rdata.c                   up to 1.1.1.2
+external/bsd/nsd/dist/region-allocator.c        up to 1.1.1.2
+external/bsd/nsd/dist/remote.c                  up to 1.1.1.3
+external/bsd/nsd/dist/remote.h                  up to 1.1.1.2
+external/bsd/nsd/dist/rrl.c                     up to 1.1.1.3
+external/bsd/nsd/dist/rrl.h                     up to 1.1.1.2
+external/bsd/nsd/dist/server.c                  up to 1.1.1.3
+external/bsd/nsd/dist/tsig.c                    up to 1.1.1.3
+external/bsd/nsd/dist/udb.c                     up to 1.1.1.3
+external/bsd/nsd/dist/udbradtree.c              up to 1.1.1.2
+external/bsd/nsd/dist/udbradtree.h              up to 1.1.1.2
+external/bsd/nsd/dist/udbzone.h                 up to 1.1.1.2
+external/bsd/nsd/dist/util.c                    up to 1.1.1.2
+external/bsd/nsd/dist/util.h                    up to 1.3
+external/bsd/nsd/dist/xfrd-disk.c               up to 1.1.1.3
+external/bsd/nsd/dist/xfrd-notify.c             up to 1.1.1.2
+external/bsd/nsd/dist/xfrd-notify.h             up to 1.1.1.2
+external/bsd/nsd/dist/xfrd-tcp.c                up to 1.1.1.2
+external/bsd/nsd/dist/xfrd-tcp.h                up to 1.1.1.2
+external/bsd/nsd/dist/xfrd.c                    up to 1.1.1.3
+external/bsd/nsd/dist/xfrd.h                    up to 1.1.1.2
+external/bsd/nsd/dist/zlexer.c                  up to 1.3
+external/bsd/nsd/dist/zlexer.lex                up to 1.1.1.2
+external/bsd/nsd/dist/zonec.c                   up to 1.1.1.3
+external/bsd/nsd/dist/zonec.h                   up to 1.1.1.2
+external/bsd/nsd/dist/zparser.c                 up to 1.3
+external/bsd/nsd/dist/zparser.h                 up to 1.3
+external/bsd/nsd/dist/zparser.y                 up to 1.1.1.3
+external/bsd/nsd/dist/contrib/README            up to 1.1.1.2
+external/bsd/nsd/dist/doc/ChangeLog             up to 1.1.1.3
+external/bsd/nsd/dist/doc/README                up to 1.1.1.3
+external/bsd/nsd/dist/doc/RELNOTES              up to 1.1.1.3
+external/bsd/nsd/etc/rc.d/nsd                   up to 1.2
+external/bsd/nsd/include/config.h               up to 1.3
+
+	Update from NSD 4.1.14 to 4.1.24.
+	[hannken, ticket #1060]
+
+sys/dev/i2c/gttwsi_core.c			1.4-1.8 via patch
+sys/dev/i2c/gttwsivar.h				1.4 via patch
+
+	- allow i2c xfers from interrupt context
+	- don't print an error message when probing for non-existent devices
+	  (PR kern/53356)
+	- make sure we won't handle interrupts before end of xfer in the polling
+	  case. Should fix "send STOP failed" messages which cause axp20x0
+	  sensors to become non-functionnal.
+	[bouyer, ticket #1061]
+
+distrib/sets/lists/base/mi			1.1192
+etc/mtree/NetBSD.dist.base			1.178-1.179
+
+	Add unbound /var/chroot/unbound/var/run.
+	[hannken, ticket #1062]
+
+sbin/gpt/gpt.c					1.76
+
+	When changing entries, skip those that do not match the -L option.
+	Should fix PR 53668.
+	[mlelstv, ticket #1063]
+
+sys/netinet/ip_reass.c				1.19-1.21
+
+	Cache ip_off and ip_len in the fragment entry.
+	Kick fragments that would introduce several !MFFs
+	in a reassembly chain. 
+	Force ip_off to zero when the reassembly is complete.
+	[maxv, ticket #1045]
+
+sys/dev/pci/aac_pci.c				1.39
+sys/dev/pci/pcidevs				1.1348
+sys/dev/pci/pcidevs.h				(regen)
+sys/dev/pci/pcidevs_data.h			(regen)
+
+	Add Adaptec RAID 2445 and 2805.
+	[uwe, ticket #1064]
+
+distrib/sets/lists/base/mi			1.1186
+etc/mtree/NetBSD.dist.base			1.174
+
+	Add /var/chroot/nsd/var/run.
+	[hannken, ticket #1065]
+
+sys/net/if_gif.c				1.144
+sys/net/if_gif.h				1.32
+sys/net/if_ipsec.c				1.18
+sys/net/if_ipsec.h				1.4
+sys/net/if_l2tp.c				1.30
+sys/net/if_l2tp.h				1.6
+sys/net/if_vlan.c				1.131,1.133
+
+	Fix panic when doing ioctl to multiple pseudo interfaces.
+	[knakahara, ticket #1066]
+
+bin/sh/mkinit.sh				1.9
+
+	Dynamically detect the way the shell matches \ in a pattern,
+	and use whatever works for the sh running this script.
+	[kre, ticket #1067]
+
+external/public-domain/tz/dist/CONTRIBUTING     up to 1.1.1.6
+external/public-domain/tz/dist/Makefile         up to 1.1.1.22
+external/public-domain/tz/dist/NEWS             up to 1.1.1.23
+external/public-domain/tz/dist/README           up to 1.1.1.7
+external/public-domain/tz/dist/TZDATA_VERSION   up to 1.13
+external/public-domain/tz/dist/africa           up to 1.1.1.16
+external/public-domain/tz/dist/antarctica       up to 1.1.1.11
+external/public-domain/tz/dist/asia             up to 1.1.1.21
+external/public-domain/tz/dist/australasia      up to 1.1.1.16
+external/public-domain/tz/dist/backward         up to 1.1.1.9
+external/public-domain/tz/dist/backzone         up to 1.1.1.15
+external/public-domain/tz/dist/etcetera         up to 1.1.1.3
+external/public-domain/tz/dist/europe           up to 1.1.1.22
+external/public-domain/tz/dist/factory          up to 1.1.1.3
+external/public-domain/tz/dist/leap-seconds.list up to 1.1.1.10
+external/public-domain/tz/dist/leapseconds      up to 1.1.1.11
+external/public-domain/tz/dist/leapseconds.awk  up to 1.1.1.7
+external/public-domain/tz/dist/northamerica     up to 1.1.1.20
+external/public-domain/tz/dist/pacificnew       up to 1.1.1.2
+external/public-domain/tz/dist/southamerica     up to 1.1.1.15
+external/public-domain/tz/dist/systemv          up to 1.1.1.2
+external/public-domain/tz/dist/theory.html      up to 1.1.1.5
+external/public-domain/tz/dist/version          up to 1.1.1.10
+external/public-domain/tz/dist/yearistype.sh    up to 1.1.1.2
+external/public-domain/tz/dist/zishrink.awk     up to 1.1.1.4
+external/public-domain/tz/dist/zone.tab         up to 1.1.1.15
+external/public-domain/tz/dist/zone1970.tab     up to 1.1.1.17
+external/public-domain/tz/dist/zoneinfo2tdf.pl  up to 1.1.1.2
+doc/3RDPARTY					1.1568 (patch)
+
+	tzdata updated to 2018f.
+	[kre, ticket #1068]
+
+external/bsd/bind/dist/lib/isc/unix/socket.c	(apply patch)
+
+	Fix bind9 issue #589 (fixed on HEAD by import of a newer
+	version): BIND will on NetBSD fail to send replies over
+	IPv4/UDP larger than 1432 bytes.
+	[he, ticket #1069]
+
+sys/netinet6/icmp6.c				1.240
+
+	Remove a leftover debug printf.
+	[ozaki-r, ticket #1071]
+
+tools/Makefile.gnuhost				(apply patch)
+
+	Force -std=gnu++03 when building gnu tools when the host
+	compiler is clang. Newer clang versions default to newer
+	standards, and this version of gcc has not been adapted.
+	[maya, ticket #1070]
+
+sys/dev/pci/if_wm.c				1.589
+
+	Fix KASSERT to prevent panic on CNP(Intel 300 series + I219) with
+	INTx interrupt (Xen dom0 or pre netbsd-8).
+	[msaitoh, ticket #1075]
+
+sys/dev/pci/pci_subr.c				1.204-1.206
+sys/dev/pci/pcireg.h				1.141-1.142
+
+	Root Complex Event Collector Bus Number Association ECN.
+	- If capability version is 2 (or greater), decode RCEC
+	  Associated Bus Numbers  register.
+	- Don't print TPH requester's ST Table Size if the ST table
+	  location field is not PCI_TPH_REQ_STTBLLOC_TPHREQ because
+	  the size field is only applicable for
+	  PCI_TPH_REQ_STTBLLOC_TPHREQ case.
+	- Add comment.
+	[msaitoh, ticket #1074]
+
+distrib/sets/lists/base/mi				(patch)
+etc/mtree/NetBSD.dist.base				(patch)
+external/Makefile					(patch)
+external/broadcom/Makefile				1.3 (patch)
+external/broadcom/Makefile.inc				1.1 (patch)
+external/broadcom/bwfm/Makefile				1.3 (patch)
+external/broadcom/bwfm/dist/LICENCE.broadcom_bcm43xx	1.1.1.1 (patch)
+external/broadcom/bwfm/dist/brcmfmac43143.bin		1.1.1.1 (patch)
+external/broadcom/bwfm/dist/brcmfmac43236b.bin		1.1.1.1 (patch)
+external/broadcom/bwfm/dist/brcmfmac43242a.bin		1.1.1.1 (patch)
+external/broadcom/bwfm/dist/brcmfmac4350-pcie.bin	1.1 (patch)
+external/broadcom/bwfm/dist/brcmfmac4350c2-pcie.bin	1.1 (patch)
+external/broadcom/bwfm/dist/brcmfmac43569.bin		1.1.1.1 (patch)
+external/broadcom/bwfm/dist/brcmfmac43602-pcie.bin	1.1 (patch)
+sys/arch/amd64/conf/GENERIC				(patch)
+sys/arch/i386/conf/GENERIC				(patch)
+sys/conf/files						(patch)
+sys/dev/pci/files.pci					(patch)
+sys/dev/usb/files.usb					(patch)
+sys/dev/usb/usbdevs					(patch)
+sys/dev/ic/bwfm.c					1.14 (patch)
+sys/dev/ic/bwfmreg.h					1.3 (patch)
+sys/dev/ic/bwfmvar.h					1.3 (patch)
+sys/dev/pci/if_bwfm_pci.c 				1.4 (patch), 1.5
+sys/dev/pci/if_bwfm_pci.h				1.8 (patch)
+sys/dev/usb/if_bwfm_usb.c 				1.8 (patch)
+distrib/sets/lists/man/mi				(patch)
+share/man/man4/bwfm.4					1.3 (patch)
+sys/dev/usb/usbdevs.h					(regen)
+sys/dev/usb/usbdevs_data.h				(regen)
+
+	Add backport of bwfm(4).
+	[maya, ticket #1072]
+
+external/public-domain/tz/dist/NEWS             up to 1.1.1.24
+external/public-domain/tz/dist/TZDATA_VERSION   up to 1.14
+external/public-domain/tz/dist/africa           up to 1.1.1.17
+external/public-domain/tz/dist/europe           up to 1.1.1.23
+external/public-domain/tz/dist/northamerica     up to 1.1.1.21
+external/public-domain/tz/dist/theory.html      up to 1.1.1.6
+external/public-domain/tz/dist/version          up to 1.1.1.11
+external/public-domain/tz/dist/ziguard.awk      up to 1.1.1.3
+external/public-domain/tz/dist/zishrink.awk     up to 1.1.1.5
+doc/3RDPARTY					(patch)
+
+	Updated tzdata to 2018g.
+	[kre, ticket #1073]
+
+sys/arch/arm/arm/disassem.c			1.40
+
+	Allow "setend be" decode.
+	[skrll, ticket #1076]
+
+distrib/evbarm/instkernel/sshramdisk/Makefile	1.16,1.17
+sys/arch/evbarm/conf/RPI_INSTALL		1.10
+
+	Bump image size to 28000k, adjust ramdisk size accordingly.
+
+external/bsd/nsd/include/config.h		1.4
+
+	Disable {send,recv}mmsg until we make our syscalls not have "sticky"
+	errors.
+	[christos, ticket #1077]
+
+sys/dev/usb/uhub.c				1.140,1.141
+sys/dev/usb/usb_subr.c				1.228
+
+	Make USB port numbers display consistent.
+	[manu, ticket #1078]
+
+sys/netinet6/udp6_usrreq.c			1.142
+	(applied to udp6_output.c, due to code refactoring
+	in -current)
+
+	Fix error path in ip6 source address selection.
+	[mlelstv, ticket #1079]
+
+sys/net/if.c					1.438,1.439
+sys/net/if.c					1.440
+sys/net/route.c					1.214-1.216
+sys/net/route.h					1.120
+sys/netinet/if_arp.c				1.276
+sys/netinet6/in6.c				1.270
+sys/netinet6/nd6.c				1.251
+
+	Avoid race conditions on ifaddr and rtentry changes.
+	[ozaki-r, ticket #1080]
+
+sys/netinet6/udp6_usrreq.c			1.143
+	(applied to udp6_output.c due to code refactoring)
+
+	Restore the length check of a sockaddr passed from userland at
+	udp6_output.
+	[ozaki-r, ticket #1081]
+
+sys/fs/puffs/puffs_vnops.c			1.213
+
+	Fix use after RECLAIM in PUFFS filesystems.
+	[manu, ticket #1082]
+
+external/gpl2/groff/dist/configure		1.2
+
+	Test for other variants to declare exit(3) to fix
+	the cross-compile from FreeBSD.
+	[sevan, ticket #1083]
+
+sys/dev/pci/ixgbe/ixgbe.c			1.167
+sys/dev/pci/ixgbe/ixv.c				1.107
+
+	Don't set LRO capability flag because we don't support it yet.
+	[msaitoh, ticket #1084]
+
+sys/dev/mii/inbmphyreg.h		1.11
+sys/dev/pci/if_wmreg.h			1.108
+sys/dev/pci/if_wm.c			1.590-1.596 via patch
+
+	- 82574 and newer document says the status field has neither EC
+	  (Excessive Collision) bit nor LC (Late Collision) bit (reserved), so
+	  don't check the bit.
+	- Add workaround for DMA hang problem which result in TX device timeout
+	  on PCH_LPT with I218. Same as FreeBSD and Linux. This workaround is
+	  only for device ID 0x155a, 0x15a2, 0x1559 and 0x15a3.
+	- Fix a PCH2 specific bug that wrong PHY register value can be read
+	  when boot. Same as FreeBSD and Linux.
+	- After writing MDIC register, don't read quickly the same register but
+	  do delay(50). Same as other OSes.
+	- Add missing wm_gate_hw_phy_config_ich8lan(false) in
+	  wm_phy_post_reset() on PCH2. wm_gate_hw_phy_config_ich8lan(true) is
+	  called in wm_reset(), so wm_gate_hw_phy_config_ich8lan(false) should
+	  be called after reset in wm_phy_post_reset().
+	- On PCH2, set the phy config counter to 50msec after (PHY) reset.
+	- KNF & Use macro.
+	[msaitoh, ticket #1085]
+
+bin/sh/parser.c					1.152
+
+	Avoid crash from redirect on null compound command.
+	[kre, ticket #1086]
+
+sys/net/if_gif.c				1.145
+
+	Fix ALTQ on gif(4).
+	[knakahara, ticket #1087]
+
+sys/kern/kern_proc.c				1.219 (patch)
+
+	Fix buffer overflow, which can lead to severe information leak.
+	[maxv, ticket #1088]
+
+external/bsd/nsd/include/config.h		1.5
+sys/kern/uipc_socket.c				1.267
+sys/kern/uipc_syscalls.c			1.198,1.199
+
+	Fix sendmmsg() and recvmmsg() and re-enable them for NSD.
+	[hannken, ticket #1089]
+
+sys/dev/usb/ugen.c				1.141
+
+	Enfore USB timeout on ugen(4) write operations.
+	[manu, ticket #1090]
+
+sys/kern/uipc_usrreq.c				1.187
+sys/netipsec/keysock.c				1.66
+
+	Don't call soroverflow when we return the error to the sender.
+	[roy, ticket #1092]
+
+sys/dev/usb/usb_quirks.c			1.88,1.89 (patch)
+sys/dev/usb/usb_quirks.h			1.28 (patch)
+sys/dev/usb/usbdevs				1.760,1.761 (patch)
+sys/dev/usb/usbdi_util.c			1.72 (patch)
+sys/dev/usb/usbdi_util.h			1.48 (patch)
+sys/dev/usb/usbdevs.h				(regen)
+sys/dev/usb/usbdevs_data.h			(regen)
+
+	Add PN533 based NFC devices and a workaround for an errata
+	in those chips destroying USB descirptors.
+	[manu, ticket #1091]
+
+sys/compat/netbsd32/netbsd32_socket.c		1.48 via patch
+
+	Fix inverted logic, which leads to buffer overflow.
+	[maxv, ticket #1093]
+
+sys/arch/x86/x86/procfs_machdep.c		1.25
+
+	Fix output of LAPIC ID and initial APIC ID.
+	[msaitoh, ticket #1094]
+
+sys/arch/newsmips/apbus/apbus.c			1.23
+sys/arch/newsmips/apbus/apbus_subr.c		1.10
+sys/arch/newsmips/apbus/apbusvar.h		1.10
+sys/arch/newsmips/conf/std.newsmips		1.18
+
+	Fix news5000 panic during boot on APbus attach. PR port-newsmips/53626.
+	[tsutsui, ticket #1095]
+
+libexec/makewhatis/makewhatis.c			1.50,1.51
+
+	Fix time.h include.
+	[sevan, ticket #1096]
+
+sys/arch/macppc/stand/ofwboot/ofdev.c		1.27
+sys/arch/macppc/stand/ofwboot/version		1.14
+
+	Fix boot failure from installation floppies.
+	PR port-macppc/53727.
+	[tsutsui, ticket #1097]
+
+external/bsd/nsd/dist/server.c			1.2
+
+	Fix NSD when built with --enable-recvmmsg.
+	[hannken, ticket #1098]
+
+sys/dev/usb/usb_quirks.c			1.90
+sys/dev/usb/usb_quirks.h			1.29
+sys/dev/usb/usbdi.c				1.179,1.180
+
+	Workaround NBP PN533 USB toggle bit bugs.
+	[manu, ticket #1099]
+
+sys/kern/kern_exec.c				1.462
+
+	Fix stack info leak.
+	[maxv, ticket #1100]
+
+sys/net/rtsock.c				1.244
+
+	Fix kernel info leak.
+	[maxv, ticket #1101]
+
+sys/kern/kern_event.c				1.104
+
+	Fix kernel info leak.
+	[maxv, ticket #1102]
+
+usr.sbin/mtree/create.c				1.76
+
+	Avoid null de-reference.
+	[sevan, ticket #1103]
+
+libexec/httpd/testsuite/data/.bzremap           up to 1.1
+libexec/httpd/testsuite/t12.out                 up to 1.1
+libexec/httpd/testsuite/t12.in                  up to 1.1
+libexec/httpd/testsuite/t13.out                 up to 1.1
+libexec/httpd/testsuite/t13.in                  up to 1.1
+libexec/httpd/testsuite/t14.out                 up to 1.1
+libexec/httpd/testsuite/t14.in                  up to 1.1
+libexec/httpd/testsuite/t15.out                 up to 1.1
+libexec/httpd/testsuite/t15.in                  up to 1.1
+libexec/httpd/CHANGES                           up to 1.28
+libexec/httpd/auth-bozo.c                       up to 1.22
+libexec/httpd/bozohttpd.8                       up to 1.74
+libexec/httpd/bozohttpd.c                       up to 1.96
+libexec/httpd/bozohttpd.h                       up to 1.56
+libexec/httpd/cgi-bozo.c                        up to 1.44
+libexec/httpd/content-bozo.c                    up to 1.16
+libexec/httpd/daemon-bozo.c                     up to 1.19
+libexec/httpd/dir-index-bozo.c                  up to 1.28
+libexec/httpd/main.c                            up to 1.21
+libexec/httpd/ssl-bozo.c                        up to 1.25
+libexec/httpd/tilde-luzah-bozo.c                up to 1.16
+libexec/httpd/lua/bozo.lua                      up to 1.3
+libexec/httpd/lua/glue.c                        up to 1.5
+libexec/httpd/lua/optparse.lua                  up to 1.2
+libexec/httpd/testsuite/Makefile                up to 1.11
+libexec/httpd/testsuite/html_cmp                up to 1.6
+libexec/httpd/testsuite/t3.out                  up to 1.4
+libexec/httpd/testsuite/t5.out                  up to 1.4
+libexec/httpd/testsuite/t6.out                  up to 1.4
+libexec/httpd/testsuite/test-bigfile            up to 1.5
+libexec/httpd/testsuite/test-simple             up to 1.5
+
+	Sync with HEAD as of 2018-11-24. Includes various changes:
+	Cosmetic changes to Lua binding in bozohttpd.
+	Fix -C scripts execution and document restrictions.
+	Add support for remapping requested paths via a .bzredirect file.
+	Handle redirections for any protocol, not just http:.
+	Fix a denial of service attack against header contents, which
+	is now bounded at 16KiB.
+	Fix access checks for special files.
+	[mrg, #1104]
+
+sys/dev/dksubr.c				1.104
+
+	rnd_add_uint32() doens't support concurent calls for the same
+	rnd_source, call it with dksc->sc_iolock held.
+	[bouyer, ticket #1105]
+
+sys/kern/subr_evcnt.c				1.13 via patch
+
+	Fix kernel information leak.
+	[maxv, ticket #1106]
+
+sys/dev/pci/if_bge.c				1.316
+
+	bge(4): Fix TSO4 for 5717 and newer.
+	[bouyer, ticket #1107]
+
+sys/dev/pci/if_wm.c				1.599
+
+	wm(4): Fix a bug that i82578 workarounds didn't work correctly.
+	[msaitoh, ticket #1108]
+
+libexec/httpd/CHANGES				1.29,1.30
+libexec/httpd/bozohttpd.c			1.97-1.99
+libexec/httpd/bozohttpd.h			1.57
+libexec/httpd/cgi-bozo.c			1.45
+libexec/httpd/main.c				1.22
+
+	Fix -X option parsing and miscelaneous cleanup.
+	[mrg, ticket #1109]
+
+sys/kern/kern_time.c				1.192,1.193
+sys/compat/linux/common/linux_misc_notalpha.c	1.110
+
+	Fix kernel info leak.
+	[maxv, ticket #1110]
+
+sys/arch/amd64/amd64/machdep.c			1.321
+
+	Fix stack info leak.
+	[maxv, ticket #1111]
+
+sys/kern/sys_ptrace_common.c			1.46
+
+	Fix stack info leak.
+	[maxv, ticket #1112]
+
+sys/kern/kern_sig.c				1.350
+
+	Fix kernel info leak.
+	[maxv, ticket #1113]
+
+sys/kern/kern_exit.c				1.273
+
+	Fix info leak.
+	[maxv, ticket #1114]
+
+sys/dev/mii/miidevs				1.130,1.131
+sys/dev/miidevs.h				(regen)
+sys/dev/miidevs_data.h				(regen)
+
+	Sort OUI by number. No functional change.
+	Add ASIX Ax88x9x.
+	Add description for DP83846A.
+	[msaitoh, ticket #1116]
+
+sys/dev/mii/inbmphyreg.h			1.12
+sys/dev/pci/if_wm.c				1.597,1.598-1.602
+sys/dev/pci/if_wmreg.h				1.109
+
+	- Fix race condition in wm_init_lcd_from_nvm().
+	- Check error status on some register's read/write.
+	- Control TX/RX descriptor snooping control bits on ICH8
+	  and newer.
+	- Disable relax ordering on 82546GB(Device ID 0x1099 and 0x10b5)
+	  or >= ICH8. Same as other OSes.
+	- Add wm_oem_bits_config_ich8lan() to control LPLU and GbE setting
+	  base on the NVM's info. This is for PCH and newer.
+	- Add some PHY workaround for suspend/resume.  This is for ICH8
+	  and newer.
+	- Add i82578 specific link stall workaround.
+	- Add PCH2 specific workaround for link layer's stability.
+	- Add comment. Modify comment.
+	[msaitoh, ticket #1117]
+
+sys/dev/pci/pci_subr.c				1.207-1.210
+sys/dev/pci/pcireg.h				1.143-1.146
+
+	- Decode PCI Enhanced Allocation.
+	- Fix the definition of PCI MSI vector mask and pending register.
+	  This problem was not a real bug because PCI_MSI{MASK,PENDING} were
+	  not used from anywhere.
+	- The downstream port of PCIe switch is not a root port, so don't
+	  print root port related registers.
+	- Add new macro PCIE_HAS_ROOTREGS(pcie_devtype) and use it. No
+	  functional change.
+	- Add new PCIE_HAS_LINKREGS(pcie_devtype) and use it. No functional
+	  change.
+	[msaitoh, ticket #1118]
+
+sys/dev/pci/pcidevs				1.1345-1.1347,1.1349-1.1355
+sys/dev/pci/pcidevs.h				(regen)
+sys/dev/pci/pcidevs_data.h			(regen)
+
+	Add some Intel devices. Some of them are found in Core i7-8550U.
+	Add Toshiba's XG4 and XG5 NVMe SSD.
+	Add C62x to the descriptions of Intel C620 series devices.
+	Add 0xa1ca for Intel C629 LPC or eSPI.
+	Add AMD Seattle Host Bridge and PCIE root port devices.
+	Add two other I2C devices of Intel.
+	Add some Intel 100 series and C230 series devices.
+	Add a whole bunch of Cavium ThunderX devices.
+	Add Rockchip vendor ID and a device.
+	Add Amazon.com UART, NVMe, and ENA PCI IDs.
+	[msaitoh, ticket #1119]
+
+sys/arch/x86/include/specialreg.h		1.132-1.136
+sys/arch/x86/x86/cpu_topology.c			1.14
+usr.sbin/cpuctl/arch/i386.c			1.85-1.90
+
+	Add MAWAU (for BND{LD,ST}X instruction) from the latest Intel SDM.
+	AMD also has CPUID 0x06 and 0x0d.
+	PCOMMIT was obsoleted.
+	Use ci_feat_val[7] as CPUID 7 %edx to match x86/cpu.h
+	AMD also has CPUID 6.
+	Remove unused code for coretemp.
+	Consistently use descs[] instead of data[].
+	AMD also reports CPUID 7's highest subleaf. Print it.
+	Add Intel CPUID Extended Topology Enumeration Fn0000000b definitions.
+	Add Intel/AMD MONITOR/MWAIT leaf.
+	Add Intel CPUID Architectural Performance Monitoring leaf Fn0000000a.
+	Print Intel CPUID Architectural Performance Monitoring leaf Fn0000000a.
+	[msaitoh, ticket #1120]
+
+usr.sbin/acpitool/acpidump/acpi.c		1.30-1.37, 1.39 via patch
+usr.sbin/acpitool/acpidump/acpidump.8		1.11-1.13 via patch
+
+	- Add ACPI LPIT (Low Power Idle Table) from FreeBSD r336185.
+	- Decode DMAR's ANDD (ACPI Name Space).
+	- Add X2APIC_MODE flag of DMAR.
+	- Remove extra newline in SPMI table.
+	- FACS is optional if the HW_REDUCED_ACPI flag is set in the FADT.
+	- Print SPCR's Interface Type and ARMH GIC Interrupt Type.
+	- Decode Generic Timer Description Table(GTDT).
+	- Don't print PM_TMR_BLK if the value is 0.
+	- Don't print X_PM_TMR_BLK if the address value is 0.
+	- Decode CSRT (Core System Resources Table).
+	[msaitoh, ticket #1121]
+
+sys/dev/ld.c					1.105
+
+	Take kernel lock for ioctl calls when backend isn't tagged MPSAFE.
+	[mlelstv, ticket #1122]
+
+sys/dev/pci/pcidevs				1.1356
+sys/dev/pci/pcidevs.h				(regen)
+sys/dev/pci/pcidevs_data.h			(regen)
+
+	Add 2 Symbios products.
+	[bouyer, ticket #1123]
+
+usr.bin/vmstat/vmstat.1				1.21,1.22
+
+	Suggest kernhist(9) which is required for vmstat -u and -U.
+	Document that vmstat -w -1 is accepted.
+	[sevan, ticket #1124]
+
+bin/sh/redir.c					1.61
+
+	Fix the <> redirection operator to not truncate the named file.
+	[kre, ticket #1125]
+
+bin/sh/alias.c					1.19
+
+	Avoid core dumps from sh in alias processing.
+	[kre, ticket #1126]
+
+bin/sh/sh.1					1.211 (patch)
+bin/sh/var.c					1.72
+bin/sh/var.h					1.38 (patch)
+
+	Change /bin/sh magic variable semantics, so that if
+	one of them (other than LINENO or RANDOM) is used
+	as a normal variable (by setting it to any value)
+	then that variable loses its special properties, and
+	simply acts like any other variable.  These variables
+	already acted normally (for what that is) if unset.
+	[kre, ticket #1127]
+
+sys/dev/pci/pci.c				1.153
+sys/dev/pci/pcivar.h				1.113
+
+	Save control registers in PCI-X, PCIe, MSI and MSI-X capability
+	area when suspending and restore them on resume.
+	[msaitoh, ticket #1128]
+
+distrib/sets/lists/man/mi			1.1628
+share/man/man4/Makefile				1.673 (patch)
+share/man/man4/mfii.4				1.1,1.2
+sys/arch/amd64/conf/ALL				1.108
+sys/arch/amd64/conf/GENERIC			1.508
+sys/arch/amd64/conf/XEN3_DOM0			1.159
+sys/arch/i386/conf/ALL				1.458
+sys/arch/i386/conf/GENERIC			1.1194
+sys/arch/i386/conf/XEN3PAE_DOM0			1.8 (via patch, applied to
+						     XEN3_DOM0)
+sys/dev/ic/mfi.c				1.60
+sys/dev/ic/mfireg.h				1.9
+sys/dev/pci/files.pci				1.410
+sys/dev/pci/mfii.c				1.1,1.2 (adjusted)
+sys/dev/pci/mpii.c				1.13
+sys/dev/pci/mpiireg.h				1.1
+
+	Add mfii(4), a driver for LSI Megaraid Fusion controllers.
+	Ported from OpenBSD.  Note that the earlier fusion controllers
+	(Megaraid 2208, codenamed Thunderbold) are also supported by mfi(4).
+	mpii(4) will take precedence if both drivers are enabled.
+	[bouyer, ticket #1129]
+
+sys/dev/pci/if_bge.c				1.317,1.320
+sys/dev/pci/if_bgereg.h				1.94
+sys/dev/pci/if_bgevar.h				1.24
+
+	bge(4): fix and workaround hardware bugs in TSO4 support for BCM5720
+	and similar.
+	[bouyer, ticket #1130]
+
+share/man/man4/mpii.4				1.3,1.4
+sys/dev/pci/mfii.c				1.3
+sys/dev/pci/mpii.c				1.15-1.18 (adapted)
+sys/dev/pci/mpiireg.h				1.2
+
+	sync mpii(4) with OpenBSD, adding support for the SAS3xxx controllers,
+	and making the driver MP-safe.
+	[bouyer, ticket #1131]
+
+sys/compat/linux/common/linux_socket.c		(apply patch, see 1.140,
+						workaround without ABI change)
+
+	Fix linux emulation of sendto(2).
+	[tsutsui, ticket #1132]
+
+sys/dev/vnd.c					1.270
+
+	Operation handle_with_strategy() also needs the
+	fstrans_start_lazy() / fstrans_done() bracket.
+	[hannken, ticket #1133]
+
+sys/kern/sys_sig.c				1.47
+
+	Fix kernel info leak, 4 bytes of padding in struct _ksiginfo.
+	[maxv, ticket #1134]
+
+external/bsd/file/lib/Makefile			1.11
+
+	Fix a parallel build race.
+	[msaitoh, ticket #1136]
+
+sys/arch/x86/pci/amdnb_misc.c			1.3
+sys/arch/x86/pci/amdtemp.c			1.22
+
+	Add support for AMD family 16h cpu sensors.
+	[is, ticket #1137]
+
+usr.bin/telnet/telnet.c				1.37
+usr.bin/telnet/utilities.c			1.24
+
+	Switch some sprintf to snprintf.
+	[maya, ticket #1135]
+
+sys/dev/pci/if_wm.c				1.606
+
+	Fix txqueue assignment.
+	[knakahara, ticket #1138]
+
+sys/dev/pci/ahcisata_pci.c			1.47
+
+	Add AHCI_PCI_QUIRK_FORCE for APU2.
+	[is, ticket #1139]
+
+share/man/man4/urtwn.4				1.16
+sys/dev/usb/if_urtwn.c				1.66
+
+	- Increase timeout values to prevent "could not send firmware command"
+	  or "timeout waiting for firmware readiness" on some devices.
+	- Add IO-DATA WN-G150UMW to the supported list.
+	[msaitoh, ticket #1140]
+
+sys/dev/pci/ixgbe/ix_txrx.c			1.51
+
+	Fix TX queue assignment in some cases.
+	[knakahara, ticket #1141]
+
